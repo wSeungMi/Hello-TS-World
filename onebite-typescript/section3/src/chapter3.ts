@@ -1,71 +1,88 @@
 /**
- * Unknown 타입
+ * 기본 타입간의 호환성
  */
 
-function unknownExam() {
-  // 업캐스팅은 가능!
-  let a: unknown = 1;
-  let b: unknown = "hello";
-  let c: unknown = true;
-  let d: unknown = null;
-  let e: unknown = undefined;
+let num1: number = 10;
+let num2: 10 = 10;
 
-  let unknownVar: unknown;
-
-  // 다운캐스팅은 안된다.
-  // let num: number = unknownVar;
-  // let str: string = unknownVar;
-  // let bool: string = unknownVar;
-}
+num1 = num2;
 
 /**
- * Never 타입
+ * 객체 타입의 호환성
+ * -> 어떤 객체 타입을 다른 객체 타입으로 취급해도 괜찮은가?
  */
 
-function neverExam() {
-  function neverFunc(): never {
-    while (true) {}
-  }
+type Animal = {
+  name: string;
+  color: string;
+};
 
-  // 업캐스팅은 가능!
-  let num: number = neverFunc();
-  let str: string = neverFunc();
-  let bool: boolean = neverFunc();
+type Dog = {
+  name: string;
+  color: string;
+  breed: string;
+};
 
-  // 다운캐스팅 되서 불가능!
-  //   let never1: never = 10;
-  //   let never2: never = "string";
-  //   let never3: never = true;
-  // }
+let animal: Animal = {
+  name: "기린",
+  color: "yellow",
+};
 
-  /**
-   * Void 타입
-   */
+let dog: Dog = {
+  name: "돌돌이",
+  color: "brown",
+  breed: "진도",
+};
 
-  function voidExam() {
-    function voidFunc(): void {
-      console.log("hi");
-      return undefined;
-    }
+// 업 캐스팅
+animal = dog;
 
-    // void 타입은 undefined 타입의 슈퍼타입이기 때문에 업캐스팅
-    let voidVar: void = undefined;
-  }
+// 다운 캐스팅
+// dog = animal;
 
-  /**
-   * any 타입
-   * any 타입은 모든 타입의 슈퍼 타입으로 위치하기도 하고, 모든 타입의 서브 타입으로 위치하기도 한다.(never 제외)
-   * 타입 계층도를 완벽히 무시해버림
-   */
+type Book = {
+  name: string;
+  price: number;
+};
 
-  function anyExam() {
-    let unknownVar: unknown;
-    let anyVar: any;
-    let undefinedVar: undefined;
-    let neverVar: never;
+type ProgrammingBook = {
+  name: string;
+  price: number;
+  skill: string;
+};
 
-    anyVar = unknownVar;
-    undefinedVar = anyVar;
-    // neverVar = anyVar;
-  }
-}
+let book: Book;
+let programmingBook: ProgrammingBook = {
+  name: "한 입 크기로 잘라먹는 리액트",
+  price: 33000,
+  skill: "reactjs",
+};
+
+// 업 캐스팅
+book = programmingBook;
+
+// 다운 캐스팅
+// programmingBook = book;
+
+/**
+ * 초과 프로퍼티 검사
+ */
+
+let book2: Book = {
+  name: "한 입 크기로 잘라먹는 리액트",
+  price: 33000,
+  // skill: "reactjs",
+};
+
+let book3: Book = programmingBook;
+
+// 함수도 동일
+function func(book: Book) {}
+
+func({
+  name: "한 입 크기로 잘라먹는 리액트",
+  price: 33000,
+  // skill: "reactjs",
+});
+
+func(programmingBook);
