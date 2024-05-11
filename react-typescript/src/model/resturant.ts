@@ -44,3 +44,13 @@ export type AddressWithoutZipCode = Omit<Address, "zipCode">;
 
 // 원하는 타입만 선택해서 가져오기
 export type RestaurantOnlyCategory = Pick<Restaurant, "category">;
+
+// api 통신
+export type ApiResponse<T> = {
+  data: T[];
+  totalPage: number;
+  page: number;
+};
+
+export type ResturantResponse = ApiResponse<Restaurant>;
+export type MenuResponse = ApiResponse<Menu>;
